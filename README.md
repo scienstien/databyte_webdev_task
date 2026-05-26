@@ -50,11 +50,11 @@ databyte_task/              ← You are here (project root)
 │   ├── model.py            ← ⭐ The AI brain — DO NOT MODIFY
 │   ├── mobilenetv2-7.onnx  ← The pretrained model weights
 │   ├── requirements.txt    ← Python dependencies
-│   ├── test.py             ← Tests to verify the model works
+│   ├── test.py             ← Tests to verify the model works(Its just to test if the model is working, you can ignore this)
 │   ├── main.py             ← 🔨 YOU BUILD THIS (FastAPI + WebSocket)
 │   └── README.md           ← Detailed backend instructions
 │
-└── frontend/               ← Browser UI (HTML, CSS, JavaScript)
+└── frontend/               ← Browser UI (HTML, CSS, JavaScript/TypeScript)
     ├── index.html          ← 🔨 YOU BUILD THIS
     └── README.md           ← Detailed frontend instructions
 ```
@@ -117,6 +117,7 @@ You need three tools installed **globally** on your machine before anything else
 Python is the language the backend runs in. You need a **global** installation (not inside a project folder).
 
 **Download:** https://www.python.org/downloads/
+**Reference Tutorial** https://www.youtube.com/watch?v=ddGTXBhaGWA&pp=ygUcaW5zdGFsbCBweXRob24gb24gd2luZG93cyAxMQ%3D%3D
 
 > ⚠️ **Critical during installation:** On the first screen of the installer, check the box that says **"Add Python to PATH"** before clicking Install. If you miss this, Python commands won't work in your terminal.
 
@@ -130,7 +131,7 @@ python --version
 pip --version
 # Should print: pip 24.x ...
 ```
-
+![alt text](image-1.png)
 > **Intuition:** `pip` is Python's package manager — like an app store for Python libraries. You'll use it to install `FastAPI`, `onnxruntime`, and other dependencies.
 
 ---
@@ -140,6 +141,8 @@ pip --version
 Node.js is needed for the frontend tooling (even if you write plain HTML, certain tools and live-reloading servers need it).
 
 **Download:** https://nodejs.org/en/download
+**Reference Tutorial** https://youtu.be/lt5D2EWZMN0
+
 
 > Choose the **LTS (Long-Term Support)** version — it's the stable one.
 
@@ -151,7 +154,7 @@ node --version
 npm --version
 # Should print: 10.x.x (or similar)
 ```
-
+![alt text](image.png)
 > **Intuition:** `npm` (Node Package Manager) is to JavaScript what `pip` is to Python.
 
 ---
@@ -161,6 +164,7 @@ npm --version
 Git is the version control system. **Git Bash** is a Unix-style terminal that comes with it — you'll use it to clone this repository and run commands.
 
 **Download:** https://git-scm.com/downloads
+**Reference Tutorial** https://youtu.be/7BOrUHFu44A
 
 During installation:
 - Choose **"Use Git from Git Bash only"** or **"Git from the command line and also from 3rd-party software"** (either works)
@@ -185,7 +189,7 @@ Now that your tools are installed, download the project to your machine.
 cd ~/Desktop
 
 # 2. Clone the repository (replace the URL with the actual repo URL)
-git clone https://github.com/YOUR_ORG/databyte_task.git
+git clone https://github.com/scienstien/databyte_webdev_task
 
 # 3. Move into the project folder
 cd databyte_task
