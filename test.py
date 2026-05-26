@@ -6,7 +6,7 @@ import sys
 def test_local_image():
     """Test with the local image.png file if it exists."""
     try:
-        with open("image.png", "rb") as f:
+        with open("cat.png", "rb") as f:
             image_bytes = f.read()
         result = model.predict(image_bytes)
         print(f"[Local image.png] Predicted: {result['label']} "
