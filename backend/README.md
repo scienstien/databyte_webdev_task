@@ -1,6 +1,6 @@
-# 🐾 Backend — Cat vs Dog Classifier
+# � Backend — Handwritten Digit Classifier (1-9)
 
-A lightweight ONNX-based image classifier that detects whether an image contains a **cat** or a **dog**, powered by **MobileNetV2** and served via **Uvicorn**.
+A lightweight ONNX-based image classifier that recognizes handwritten digits from **1 to 9**, powered by **MNIST model** and served via **Uvicorn**.
 
 ---
 
@@ -9,16 +9,15 @@ A lightweight ONNX-based image classifier that detects whether an image contains
 ```
 backend/
 ├── model.py            # Core inference logic (preprocessing + ONNX prediction)
-├── test.py             # Test suite for cat and dog classification
+├── test.py             # Test suite for handwritten digit classification
 ├── requirements.txt    # All Python dependencies
-├── mobilenetv2-7.onnx  # Pre-trained MobileNetV2 ONNX model (not tracked by git)
-├── dog.png             # Sample dog test image (not tracked by git)
-├── image.png           # Sample cat test image (not tracked by git)
-└── .gitignore          # Excludes venv, model, images, and bytecode
+├── mnist-12.onnx       # Pre-trained MNIST ONNX model (included in repository)
+├── digit_1.png         # Sample digit test images (included in repository)
+├── digit_5.png         # Sample digit test images (included in repository)
+└── .gitignore          # Excludes venv and bytecode
 ```
 
-> **Note:** The `.onnx` model file and image files are excluded from Git (see `.gitignore`).  
-> You will need to obtain these separately or use your own test images.
+> **Note:** The `.onnx` model file and test images are included in this repository and will be cloned automatically.
 
 ---
 
@@ -128,17 +127,17 @@ pip list
 
 ---
 
-### Step 5 — Add Required Files
+### Step 5 — Verify Files Are Present
 
-The following files are **not tracked by Git** and must be placed manually inside the `backend/` folder before running anything:
+The following files are **included in the repository** and will be cloned automatically:
 
 | File | Description |
 |------|-------------|
-| `mobilenetv2-7.onnx` | Pre-trained MobileNetV2 model weights |
-| `dog.png` | A sample dog image for testing |
-| `image.png` | A sample cat image for testing |
+| `mnist-12.onnx` | Pre-trained MNIST model weights |
+| `digit_1.png` | Sample handwritten digit images for testing |
+| `digit_5.png` | Sample handwritten digit images for testing |
 
-> If you obtained the project as a zip archive, these files should already be included.
+> These files are already included when you clone the repository. No additional setup needed.
 
 ---
 
@@ -148,7 +147,7 @@ The following files are **not tracked by Git** and must be placed manually insid
 
 ### Run the Test Suite
 
-The `test.py` script runs classification tests on both a dog image and a cat image, and prints results with pass/fail status:
+The `test.py` script runs classification tests on handwritten digit images, and prints results with pass/fail status:
 
 ```bash
 python test.py
@@ -158,18 +157,18 @@ python test.py
 
 ```
 ==================================================
-  Cat vs Dog Classifier - Test Suite
+  Handwritten Digit Classifier - Test Suite
 ==================================================
 
---- Dog Image Test ---
-  Predicted: dog (confidence: 94.32%)
-  Details: [{'label': 'dog', 'confidence': 0.9432}, {'label': 'cat', 'confidence': 0.0568}]
-  ✓ PASSED: Correctly classified as dog
+--- Digit 1 Image Test ---
+  Predicted: 1 (confidence: 95.23%)
+  Details: [{'label': '1', 'confidence': 0.9523}, {'label': '2', 'confidence': 0.02}, ...]
+  ✓ PASSED: Correctly classified as 1
 
---- Cat Image Test ---
-  Predicted: cat (confidence: 89.17%)
-  Details: [{'label': 'cat', 'confidence': 0.8917}, {'label': 'dog', 'confidence': 0.1083}]
-  ✓ PASSED: Correctly classified as cat
+--- Digit 5 Image Test ---
+  Predicted: 5 (confidence: 92.15%)
+  Details: [{'label': '5', 'confidence': 0.9215}, {'label': '3', 'confidence': 0.015}, ...]
+  ✓ PASSED: Correctly classified as 5
 
 ==================================================
   Results: 2 passed, 0 failed
@@ -185,14 +184,14 @@ You can import `model.py` directly and call `predict()` with raw image bytes:
 ```python
 import model
 
-with open("your_image.png", "rb") as f:
+with open("handwritten_digit.png", "rb") as f:
     image_bytes = f.read()
 
 result = model.predict(image_bytes)
 
-print(result["label"])       # "cat" or "dog"
+print(result["label"])       # "1" to "9"
 print(result["confidence"])  # float between 0.0 and 1.0
-print(result["predictions"]) # list with scores for both classes
+print(result["predictions"]) # list with scores for all digits 1-9
 ```
 
 ---

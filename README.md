@@ -1,17 +1,17 @@
 # 🤖 AI Vision Integration Task — DataByte
 
-> **Goal:** Build a real-time, browser-based image classification app powered by a local AI model — no cloud APIs, no shortcuts, just you, the code, and the model.
+> **Goal:** Build a real-time, browser-based handwritten digit recognition app (1-9) powered by a local MNIST model — no cloud APIs, no shortcuts, just you, the code, and the model.
 
 ---
 
 ## 📖 What Is This Project?
 
-This is a full-stack AI integration task. You're given a **pretrained image classification model** — already trained, already smart — and your job is to wire it into a working web application that:
+This is a full-stack AI integration task. You're given a **pretrained MNIST handwritten digit recognition model** — already trained, already smart — and your job is to wire it into a working web application that:
 
-- Lets a user **upload a photo** through a browser
-- Sends that photo to a **Python backend** over a **WebSocket** connection
+- Lets a user **upload a handwritten digit image** through a browser
+- Sends that image to a **Python backend** over a **WebSocket** connection
 - Runs **AI inference locally** on your machine (no external APIs)
-- Sends back a **JSON prediction** (e.g., `"cat"` with `91% confidence`)
+- Sends back a **JSON prediction** (e.g., `"5"` with `97% confidence`)
 - **Displays the result** live on the frontend
 
 Think of yourself as an **AI integration engineer**, not a researcher. The model is already built. Your job is to make it useful.
@@ -23,10 +23,10 @@ Think of yourself as an **AI integration engineer**, not a researcher. The model
 Before jumping into commands, take 5 minutes to understand *why* things are structured the way they are. This intuition will save you hours of debugging later.
 
 ### Why a Backend?
-The AI model (`mobilenetv2-7.onnx`) is a binary file that weighs ~14MB. It runs using Python libraries (`onnxruntime`, `numpy`, `Pillow`). **Browsers cannot run this directly.** So we need a Python server that:
-1. Receives the image
+The AI model (`mnist-12.onnx`) is a binary file that runs using Python libraries (`onnxruntime`, `numpy`, `Pillow`). **Browsers cannot run this directly.** So we need a Python server that:
+1. Receives the handwritten digit image
 2. Runs the model
-3. Returns the result
+3. Returns the predicted digit (1-9)
 
 ### Why WebSockets?
 Regular HTTP (`fetch`, `XMLHttpRequest`) is a one-shot deal — you ask, you get one answer, connection closes. WebSockets keep the connection **open**, so you can send images and receive predictions continuously in real time without reconnecting each time. This is what makes the experience feel instant and live.
@@ -34,8 +34,8 @@ Regular HTTP (`fetch`, `XMLHttpRequest`) is a one-shot deal — you ask, you get
 ### Why ONNX?
 The model was originally trained in PyTorch. ONNX (Open Neural Network Exchange) is a **universal format** — like a PDF for AI models. You can train in PyTorch and run in any language/framework that supports ONNX. `onnxruntime` is the engine that runs it.
 
-### What is MobileNetV2?
-It's a lightweight neural network designed for **mobile and edge devices** — fast, accurate, small. It was trained on **ImageNet**, a dataset of 1,000 categories of objects. It knows about 118 dog breeds and 5 cat types, among other things. We group those categories and ask: *"is this more dog-like or more cat-like?"*
+### What is MNIST?
+MNIST (Modified National Institute of Standards and Technology) is a classic dataset and model in machine learning. It's trained on 70,000 handwritten digit images (0-9). Our model predicts digits 1-9 by analyzing pixel patterns and shape characteristics. It's lightweight, fast, and highly accurate for this specific task.
 
 ---
 
@@ -48,7 +48,7 @@ databyte_task/              ← You are here (project root)
 │
 ├── backend/                ← Python FastAPI server + AI model
 │   ├── model.py            ← ⭐ The AI brain — DO NOT MODIFY
-│   ├── mobilenetv2-7.onnx  ← The pretrained model weights
+│   ├── mnist-12.onnx       ← The pretrained MNIST model weights
 │   ├── requirements.txt    ← Python dependencies
 │   ├── test.py             ← Tests to verify the model works(Its just to test if the model is working, you can ignore this)
 │   ├── main.py             ← 🔨 YOU BUILD THIS (FastAPI + WebSocket)
@@ -80,7 +80,7 @@ databyte_task/              ← You are here (project root)
 | File | Purpose |
 |---|---|
 | `backend/model.py` | Exposes a `predict(image_bytes)` function — your AI engine |
-| `backend/mobilenetv2-7.onnx` | The pretrained MobileNetV2 model weights |
+| `backend/mnist-12.onnx` | The pretrained MNIST model weights |
 | `backend/test.py` | Tests to verify `model.py` works correctly |
 | `backend/requirements.txt` | All Python packages you need |
 
@@ -93,13 +93,22 @@ databyte_task/              ← You are here (project root)
 
 ### Expected JSON Response Format
 
-When the model classifies an image, your backend must return:
+When the model classifies a handwritten digit image, your backend must return:
 
 ```json
 {
+  "label": "5",
+  "confidence": 0.97,
   "predictions": [
-    { "label": "cat", "confidence": 0.91 },
-    { "label": "dog", "confidence": 0.09 }
+    { "label": "1", "confidence": 0.01 },
+    { "label": "2", "confidence": 0.005 },
+    { "label": "3", "confidence": 0.01 },
+    { "label": "4", "confidence": 0.002 },
+    { "label": "5", "confidence": 0.97 },
+    { "label": "6", "confidence": 0.003 },
+    { "label": "7", "confidence": 0.002 },
+    { "label": "8", "confidence": 0.001 },
+    { "label": "9", "confidence": 0.002 }
   ]
 }
 ```
